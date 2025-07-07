@@ -31,3 +31,24 @@ export const getuser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getuserbyemail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.params.email }).select(
+      "-password"
+    );
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
