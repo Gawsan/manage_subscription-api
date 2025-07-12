@@ -73,7 +73,6 @@ const subscriptionSchema = new mongoose.Schema(
 
     renewalDate: {
       type: Date,
-      required: [true, "Renewal Date is required"],
       validate: {
         validator: function (v) {
           return v > this.startDate;
@@ -107,7 +106,7 @@ subscriptionSchema.pre("save", function (next) {
   if (this.renewalDate < new Date()) {
     this.status = "expired";
   }
-  next;
+  next();
 });
 
 const Subscription = mongoose.model("Subscription", subscriptionSchema);
